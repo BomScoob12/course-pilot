@@ -1,0 +1,1 @@
+// this api is used to get the courses from the database
