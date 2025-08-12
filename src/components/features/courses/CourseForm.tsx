@@ -3,18 +3,13 @@
 import { CourseFormData } from '@/types/courses-type';
 import React from 'react';
 
-// mock data
-// const mockCourseFormData: CourseFormData = {
-//   title: 'Introduction to AI',
-//   description: 'Learn the basics of Artificial Intelligence.',
-//   instructor: 'John Doe',
-//   duration: 10,
-//   level: 'beginner',
-//   price: 99.99,
-//   category: 'Programming',
-// };
-
-function CourseForm({ courseFormData }: { courseFormData?: CourseFormData }) {
+function CourseForm({
+  courseFormData,
+  handleSubmit,
+}: {
+  courseFormData?: CourseFormData;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+}) {
   const [formData, setFormData] = React.useState<CourseFormData>({
     title: '',
     description: '',
@@ -31,22 +26,6 @@ function CourseForm({ courseFormData }: { courseFormData?: CourseFormData }) {
     }
     // setFormData(mockCourseFormData); // Using mock data for demonstration
   }, [courseFormData]);
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.target as HTMLFormElement;
-    const data = {
-      title: (form.title as unknown as HTMLInputElement).value,
-      description: form.description.value,
-      instructor: form.instructor.value,
-      duration: Number(form.duration.value),
-      level: form.level.value as 'beginner' | 'intermediate' | 'advanced',
-      price: Number(form.price.value),
-      category: form.category.value,
-    };
-    console.log('Form submitted:', data);
-    // Here you would typically send the data to your backend API
-  };
 
   return (
     <div className="flex-col">
