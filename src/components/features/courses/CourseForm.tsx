@@ -30,7 +30,7 @@ function CourseForm({ courseFormData }: { courseFormData?: CourseFormData }) {
       setFormData(courseFormData);
     }
     // setFormData(mockCourseFormData); // Using mock data for demonstration
-  }, []);
+  }, [courseFormData]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
