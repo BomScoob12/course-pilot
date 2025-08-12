@@ -1,3 +1,4 @@
+import CourseForm from '@/components/features/courses/CourseForm';
 import Link from 'next/link';
 
 export default function Home() {
@@ -18,9 +19,12 @@ export default function Home() {
           for managing courses.
         </p>
       </div>
+      <div className='w-1/3'>
+        <CourseForm />
+      </div>
       <div className="flex justify-center">
         <Link href="/my-courses">
-          <button className="px-4 py-2 rounded hover:bg-gray-300">
+          <button className="px-4 py-2 rounded-lg bg-black text-white hover:bg-gray-800">
             View My Courses
           </button>
         </Link>

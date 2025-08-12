@@ -23,7 +23,6 @@ function CourseList({
       <p>Level: {course.level}</p>
       <p>Price: ${course.price}</p>
       <p>Category: {course.category}</p>
-      <p>Rating: {course.rating} / 5</p>
       {isEdit && (
         <button className="mt-2 bg-blue-500 text-white px-4 py-2 rounded">
           Edit Course
