@@ -3,6 +3,16 @@
 import { CourseFormData } from '@/types/courses-type';
 import React from 'react';
 
+const defaultCourseFormData: CourseFormData = {
+  title: '',
+  description: '',
+  instructor: '',
+  duration: 0,
+  level: 'intermediate',
+  price: 0,
+  category: '',
+};
+
 function CourseForm({
   courseFormData,
   handleSubmit,
@@ -10,15 +20,9 @@ function CourseForm({
   courseFormData?: CourseFormData;
   handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }) {
-  const [formData, setFormData] = React.useState<CourseFormData>({
-    title: '',
-    description: '',
-    instructor: '',
-    duration: 0,
-    level: 'intermediate',
-    price: 0,
-    category: '',
-  });
+  const [formData, setFormData] = React.useState<CourseFormData>(
+    defaultCourseFormData
+  );
 
   React.useEffect(() => {
     if (courseFormData) {
@@ -98,17 +102,7 @@ function CourseForm({
         <button type="submit">Submit</button>
         <button
           type="reset"
-          onClick={() =>
-            setFormData({
-              title: '',
-              description: '',
-              instructor: '',
-              duration: 0,
-              level: 'beginner',
-              price: 0,
-              category: '',
-            })
-          }
+          onClick={() => setFormData(defaultCourseFormData)}
           className="px-4 py-2 rounded-lg bg-gray-300 text-black hover:bg-gray-400"
         >
           Reset
