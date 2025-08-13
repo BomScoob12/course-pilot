@@ -61,16 +61,14 @@ async function POST(request: Request) {
   if (!reader) {
     return new Response('No response body', { status: 500 });
   }
-  const fullResponse = new Array<OllamaResponse>();
+
+  const fullResponse: OllamaResponse[] = [];
 
   while (true) {
     const { done, value } = await reader.read();
     if (done) break;
 
     const decodedValue = decoder.decode(value, { stream: true });
-
-    // this is recieving chunks of data from the LLM like this.
-    // Received chunk: {"model":"deepseek-r1:7b","created_at":"2025-08-13T07:14:04.1198439Z","response":"Programming","done":false}
     console.log('Received chunk:', decodedValue);
 
     try {
@@ -89,41 +87,40 @@ async function POST(request: Request) {
   const textResponse = fullResponse.map((r) => r.response).join('');
   console.log('Text response:', textResponse);
 
-  // split two section of response
-  // 1. thinking section
-  // 2. JSON section
-
+  // thinking section
   let thinkingSection = '';
-  const startThinkingIndex = textResponse.indexOf('<think>');
-  const endThinkingIndex = textResponse.lastIndexOf('</think>');
-  if (startThinkingIndex !== -1 && endThinkingIndex !== -1) {
+  const thinkStart = textResponse.indexOf('<think>');
+  const thinkEnd = textResponse.indexOf('</think>');
+  if (thinkStart !== -1 && thinkEnd !== -1) {
     thinkingSection = textResponse
-      .substring(startThinkingIndex + 7, endThinkingIndex)
+      .substring(thinkStart + '<think>'.length, thinkEnd)
       .trim();
   }
-
   console.log('Thinking section:', thinkingSection);
 
-  let jsonSction = '';
-  const startJsonIndex = textResponse.indexOf('{');
-  const endJsonIndex = textResponse.lastIndexOf('}');
-  console.log('Start JSON Index:', startJsonIndex);
-  console.log('End JSON Index:', endJsonIndex);
-  if (startJsonIndex !== -1 && endJsonIndex !== -1) {
-    jsonSction = textResponse
-      .substring(startJsonIndex, endJsonIndex + 1)
-      .trim();
+  // json section
+  let jsonSection = '';
+  const jsonStart = textResponse.indexOf('{');
+  const jsonEnd = textResponse.lastIndexOf('}');
+  if (jsonStart !== -1 && jsonEnd !== -1) {
+    jsonSection = textResponse.substring(jsonStart, jsonEnd + 1).trim();
   }
 
-  console.log('JSON section:', jsonSction);
-  console.log('JSON section parse object:', JSON.parse(jsonSction));
+  let parsedJson = {};
+  try {
+    parsedJson = JSON.parse(jsonSection);
+  } catch (err) {
+    console.error('Error parsing JSON section:', err);
+  }
+  console.log('JSON section parse object:', parsedJson);
 
-  return NextResponse.json(fullResponse, {
-    status: 200,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  const responseModel = {
+    model: LLM_MODEL,
+    created_at: new Date().toISOString(),
+    generated_data: parsedJson,
+    thinking_section: thinkingSection,
+  };
+  return NextResponse.json(responseModel, { status: 200 });
 }
 
 export { POST };
