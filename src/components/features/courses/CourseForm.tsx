@@ -33,7 +33,7 @@ function CourseForm({
 
   return (
     <div className="flex-col">
-      <h1 className="text-2xl">Create or Edit Course</h1>
+      <h1 className="text-2xl font-bold">Create Course</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -99,7 +99,12 @@ function CourseForm({
           required
           className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button type="submit">Submit</button>
+        <button
+          type="submit"
+          className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+        >
+          Submit
+        </button>
         <button
           type="reset"
           onClick={() => setFormData(defaultCourseFormData)}

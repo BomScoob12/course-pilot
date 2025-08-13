@@ -1,10 +1,13 @@
 'use client';
+import ChatBox from '@/components/features/ai-chatbox/ChatBox';
 import CourseForm from '@/components/features/courses/CourseForm';
 import { CourseFormData } from '@/types/courses-type';
 import Link from 'next/link';
 import React from 'react';
 
 export default function Home() {
+  const [promptValue, setPromptValue] = React.useState<string>('');
+
   const [courseForm, setCourseForm] = React.useState<CourseFormData>({
     title: '',
     description: '',
@@ -28,7 +31,6 @@ export default function Home() {
       category: form.category.value,
     };
     console.log('Form submitted:', data);
-    // Here you would typically send the data to your backend API
     fetch('/api/courses', {
       method: 'POST',
       headers: {
@@ -44,7 +46,6 @@ export default function Home() {
       })
       .then((result) => {
         console.log('Course created successfully:', result);
-        // Optionally reset the form or redirect
         setCourseForm({
           title: '',
           description: '',
@@ -60,8 +61,24 @@ export default function Home() {
       });
   };
 
+  const handlePromptSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('Prompt submitted:', promptValue);
+    fetch('/api/generate', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ prompt: promptValue }),
+    });
+  };
+
+  React.useEffect(() => {
+    console.log(promptValue);
+  });
+
   return (
-    <div className="flex-col">
+    <div className="flex flex-col items-center">
       <h1 className="text-4xl font-bold text-center my-8">
         Welcome to the Course Pilot
       </h1>
@@ -77,7 +94,14 @@ export default function Home() {
           for managing courses.
         </p>
       </div>
-      <div className="w-1/3">
+      <div className="w-4/5 items-center mt-6">
+        <ChatBox
+          promptValue={promptValue}
+          setPromptValue={setPromptValue}
+          handleSubmit={handlePromptSubmit}
+        />
+      </div>
+      <div className="w-4/5 items-center mt-6">
         <CourseForm
           courseFormData={courseForm}
           handleSubmit={handleCourseSubmit}
