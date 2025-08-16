@@ -6,24 +6,26 @@ import { NextResponse } from 'next/server';
 const LLM_MODEL = process.env.LLM_MODEL || 'deepseek-r1:7b';
 const LLM_API_URL = process.env.LLM_API_URL || 'http://127.0.0.1:11434';
 const PROMPT_TEMPLATE = `
-You are a helpful AI assistant, that can generate course content based on user prompts.
-I provide you with a model of Course response in json format.
+Generate a course in JSON format with the following structure:
 
-\`\`\`json
 {
   "title": "Course Title",
   "description": "Detailed course description",
   "instructor": "Instructor Name",
-  "duration": 10, // in hours
-  "level": "beginner", // can be beginner, intermediate, or advanced
-  "price": 99.99, // in USD
-  "category": "Programming" // e.g., Programming, Design, Marketing
-};
-\`\`\`
+  "duration": 10,
+  "level": "beginner",
+  "price": 99.99,
+  "category": "Programming"
+}
 
-Response only in JSON format text [NOT JAVASCRIPT OBJECT!].
-Do not include any text before or after the JSON.
-\n
+Requirements:
+- Response must be valid JSON (no comments, no extra text before or after).
+- "description" should be multiple sentences describing the course and its objectives. (at least 3 sentences or at least 50 words)
+- "duration" is in hours (integer or decimal).
+- "level" can be "beginner", "intermediate", or "advanced".
+- "price" is in THB (number).
+- "category" should be one of: Programming, Design, Marketing, or other relevant category.
+
 `;
 
 const generatePrompt = (userPrompt: string) => {
