@@ -35,6 +35,9 @@ function CourseForm({
     <div className="flex-col">
       <h1 className="text-2xl font-bold">Create Course</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+        <label htmlFor="title" className="font-semibold">
+          Title:
+        </label>
         <input
           type="text"
           name="title"
@@ -43,6 +46,9 @@ function CourseForm({
           required
           className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <label htmlFor="description" className="font-semibold">
+          Description:
+        </label>
         <input
           type="text"
           name="description"
@@ -51,6 +57,9 @@ function CourseForm({
           required
           className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <label htmlFor="instructor" className="font-semibold">
+          Instructor:
+        </label>
         <input
           type="text"
           name="instructor"
@@ -59,6 +68,9 @@ function CourseForm({
           required
           className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <label htmlFor="duration" className="font-semibold">
+          Duration (hours):
+        </label>
         <input
           type="number"
           name="duration"
@@ -67,6 +79,9 @@ function CourseForm({
           required
           className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <label htmlFor="level" className="font-semibold">
+          Level:
+        </label>
         <select
           name="level"
           id="level"
@@ -83,6 +98,9 @@ function CourseForm({
           <option value="intermediate">Intermediate</option>
           <option value="advanced">Advanced</option>
         </select>
+        <label htmlFor="price" className="font-semibold">
+          Price (THB):
+        </label>
         <input
           type="number"
           name="price"
@@ -91,14 +109,19 @@ function CourseForm({
           required
           className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+        <label htmlFor="category" className="font-semibold">
+          Category:
+        </label>
         <input
           type="text"
           name="category"
           id="category"
           defaultValue={formData.category}
           required
+          step="any"
           className="border border-gray-300 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+
         <button
           type="submit"
           className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
