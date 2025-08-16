@@ -1,8 +1,7 @@
 'use client';
 import ChatBox from '@/components/features/ai-chatbox/ChatBox';
 import CourseForm from '@/components/features/courses/CourseForm';
-import { Course, CourseFormData } from '@/types/courses-type';
-import Link from 'next/link';
+import { CourseFormData } from '@/types/courses-type';
 import React from 'react';
 
 export default function Home() {
@@ -128,13 +127,6 @@ export default function Home() {
           courseFormData={courseForm}
           handleSubmit={handleCourseSubmit}
         />
-      </div>
-      <div className="flex justify-center">
-        <Link href="/my-courses">
-          <button className="px-4 py-2 rounded-lg bg-black text-white hover:bg-gray-800">
-            View My Courses
-          </button>
-        </Link>
       </div>
     </div>
   );
