@@ -1,7 +1,7 @@
 'use client';
 import ChatBox from '@/components/features/ai-chatbox/ChatBox';
 import CourseForm from '@/components/features/courses/CourseForm';
-import { CourseFormData } from '@/types/courses-type';
+import { Course, CourseFormData } from '@/types/courses-type';
 import Link from 'next/link';
 import React from 'react';
 
@@ -61,21 +61,43 @@ export default function Home() {
       });
   };
 
-  const handlePromptSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handlePromptSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('Prompt submitted:', promptValue);
-    fetch('/api/generate', {
+    const response = await fetch('/api/generate', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ prompt: promptValue }),
     });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Error generating course content:', errorText);
+      return;
+    }
+
+    const data = await response.json();
+    console.log('AI response:', data);
+
+    const generatedData = data.generated_data as CourseFormData;
+    setCourseForm({
+      title: generatedData.title || '',
+      description: generatedData.description || '',
+      instructor: generatedData.instructor || '',
+      duration: generatedData.duration || 0,
+      level: generatedData.level || 'intermediate',
+      price: generatedData.price || 0,
+      category: generatedData.category || '',
+    });
+
+    console.log('Course form updated with AI data:', courseForm);
   };
 
   React.useEffect(() => {
-    console.log(promptValue);
-  });
+    console.log(courseForm);
+  }, [courseForm]);
 
   return (
     <div className="flex flex-col items-center">
